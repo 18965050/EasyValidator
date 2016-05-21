@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity class="cn.xyz.chaos.validator.test.UserDTO" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="classpath://validator/val.xsd">
+  <fields>
+    <field property="logUsername">
+      <valid name="required" msg="用户名不能为空" />
+      <valid name="length" min="4" max="16" msg="用户名长度为4-16个字符" />
+      <valid name="regex" args="\w+" msg="用户名为字符a-z,1-9,_" />
+    </field>
+    <field property="logPassword" valid-alias="required,equal,regex">
+      <valid name="required" msg="密码不能为空" />
+      <valid name="length" args="4,16" msg="密码长度为4-16个字符" />
+      <valid name="regex" args="\w+" msg="密码为字符a-z,1-9" />
+      <valid alias="num" name="regex" args="\d+" msg="必须为数字" />
+    </field>
+    <field property="logPassword2">
+      <valid name="required" msg="密码不能为空" />
+      <valid name="equal" args="logPassword,logPassword2" msg="两次输入不一致" />
+    </field>
+    <field property="mobile">
+      <valid name="required" msg="手机号码不能为空" />
+      <valid name="regex" args="\d{11}" msg="手机号码格式错误" />
+    </field>
+    <field property="phone">
+      <valid name="required" msg="电话号码不能为空" />
+      <valid name="regex" args="\d+" msg="电话号码格式错误" />
+    </field>
+  </fields>
+  <groups>
+    <group name="login">
+      <field property="logUsername" />
+      <field property="logPassword" />
+    </group>
+    <group name="register">
+      <field property="logUsername" />
+      <field property="logPassword" />
+      <script test="target.logPassword == 'mima'">
+        <field property="logPassword2" />
+      </script>
+      <script test="target.logUsername == 'mfan'">
+        <field property="mobile" />
+        <field property="phone" />
+      </script>
+    </group>
+    <group name="register1">
+      <field property="logUsername" />
+      <field property="logPassword" />
+      <script test="target.logUsername != 'mfan'">
+        <field property="mobile" />
+        <field property="phone" />
+      </script>
+    </group>
+    <group name="register2">
+      <field property="logUsername" />
+      <field property="logPassword" valid-alias="required,equal,num" />
+      <field property="logPassword2" />
+    </group>
+  </groups>
+</entity>

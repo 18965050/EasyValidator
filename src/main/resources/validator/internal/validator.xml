@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="validator.xsd">
+  <!-- 规则校验 -->
+  <action-validator class="cn.xyz.chaos.validator.action.FieldActionValidator" />
+  <action-validator class="cn.xyz.chaos.validator.action.ScriptActionValidator" />
+
+  <action-resolver class="cn.xyz.chaos.validator.action.xml.FieldActionResolver" />
+  <action-resolver class="cn.xyz.chaos.validator.action.xml.ScriptActionResolver" />
+
+  <!-- 字段规则校验器 -->
+  <validator name="required" class="cn.xyz.chaos.validator.validators.RequiredValidator" />
+  <validator name="null" class="cn.xyz.chaos.validator.validators.NullValidator" />
+  <validator name="notnull" class="cn.xyz.chaos.validator.validators.NotNullValidator" />
+  <validator name="notblank" class="cn.xyz.chaos.validator.validators.NotBlankValidator" />
+  <validator name="regex" class="cn.xyz.chaos.validator.validators.RegexValidator" />
+  <validator name="length" class="cn.xyz.chaos.validator.validators.LengthValidator" />
+  <validator name="max" class="cn.xyz.chaos.validator.validators.MaxValidator" />
+  <validator name="min" class="cn.xyz.chaos.validator.validators.MinValidator" />
+  <validator name="range" class="cn.xyz.chaos.validator.validators.RangeValidator" />
+  <validator name="restrict" class="cn.xyz.chaos.validator.validators.RestrictValidator" />
+  <validator name="size" class="cn.xyz.chaos.validator.validators.SizeValidator" />
+  <validator name="compare" class="cn.xyz.chaos.validator.validators.CompareValidator" />
+  <validator name="equal" class="cn.xyz.chaos.validator.validators.EqualValidator" />
+  <validator name="atmost" class="cn.xyz.chaos.validator.validators.AtMostValidator" />
+  <validator name="atleast" class="cn.xyz.chaos.validator.validators.AtLeastValidator" />
+  <validator name="past" class="cn.xyz.chaos.validator.validators.PastValidator" />
+  <validator name="future" class="cn.xyz.chaos.validator.validators.FutureValidator" />
+  <validator name="url" class="cn.xyz.chaos.validator.validators.UrlValidator" />
+  <validator name="email" class="cn.xyz.chaos.validator.validators.EmailValidator" />
+  <validator name="idcard" class="cn.xyz.chaos.validator.validators.IdCardValidator" />
+</validators>

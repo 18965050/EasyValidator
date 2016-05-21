@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity class="cn.xyz.chaos.validator.test.entity.SampleDTO" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="entity.xsd">
+    <fields>
+        <field property="int1">
+            <valid name="min" min="1" msg="int1最小为1"/>
+            <valid name="max" max="11" msg="int1最大为11"/>
+        </field>
+        <field property="int2">
+            <valid name="min" min="2" msg="int2最小为2"/>
+            <valid name="max" max="11" msg="int2最大为12"/>
+        </field>
+        <field property="int3">
+            <valid name="min" min="3" msg="int3最小为3"/>
+            <valid name="max" max="11" msg="int3最大为13"/>
+        </field>
+    </fields>
+    <groups>
+        <group name="test_int_min_max">
+            <field property="int1"/>
+            <field property="int2"/>
+            <field property="int3"/>
+        </group>
+    </groups>
+</entity>

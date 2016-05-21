@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity class="cn.xyz.chaos.validator.test.entity.ValidSample" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="entity.xsd">
+  <fields>
+    <field property="name"  valid-alias="require,regex,length">
+      <valid name="required" msg="name should required" />
+      <valid name="notnull" msg="name should not null" />
+      <valid name="notblank" msg="name should not blank" />
+      <valid name="regex" regex="\w+" msg="name regex{a-z,1-9,_}" />
+      <valid name="length" min="2" max="4" msg="name length from 2 to 4"/>
+      <valid name="size" min="2" max="4" msg="name length from 2 to 4"/>
+    </field>
+    <field property="gender" valid-alias="restrict">
+      <valid name="restrict" restrict="0,1" msg="gender should 男/女（0/1）"/>
+      <valid name="min" min="0" msg="age min is 0"/>
+      <valid name="max" max="1" msg="age max is 1" />
+    </field>
+    <field property="age">
+      <valid name="min" min="0" msg="age min is 0"/>
+      <valid name="max" max="99" msg="age max is 99" />
+
+      <valid name="range" min="0" max="99" msg="age range from 0 to 99" />
+    </field>
+    <field property="birthday" valid-alias="past">
+      <valid name="past" msg="birthday should past"/>
+      <valid name="future" msg="birthday should not future"/>
+    </field>
+    <field property="idcard">
+      <valid name="idcard"  msg="idcard should idcard"/>
+      <valid name="atmost" ref="age,birthday,idcard" max="2" msg="age|birthday|idcard至多填写两个" />
+      <valid name="atleast" ref="age,birthday,idcard" min="1" msg="age|birthday|idcard至少填写一个" />
+    </field>
+    <field property="nick" valid-alias="null,equal">
+      <valid name="null" msg="nick不能为NULL" />
+      <valid name="equal" ref="name,nick" msg="nick必须与name相同" />
+      <valid name="compare" ref="name,nick" flag="EQ" msg="nick必须与name相同" />
+    </field>
+    <field property="url">
+      <valid name="url" msg="url should xyz"/>
+      <valid name="url" url="http://x.y.z:80" msg="url should xyz"/>
+    </field>
+    <field property="email">
+      <valid name="email"  msg="email必须邮件格式"/>
+    </field>
+  </fields>
+  <groups>
+    <group name="submit">
+      <field property="name" />
+      <field property="gender" />
+      <field property="age" />
+      <field property="birthday" />
+      <field property="idcard" />
+      <field property="nick" />
+      <field property="url" />
+      <field property="email" />
+    </group>
+    <group name="submit1">
+      <field property="name" valid-alias="notnull,notblank,regex,size" />
+      <field property="gender" valid-alias="min,max" />
+    </group>
+  </groups>
+</entity>

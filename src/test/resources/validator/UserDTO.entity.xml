@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity class="cn.xyz.chaos.validator.test.entity.UserDTO" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="entity.xsd">
+  <fields>
+    <field property="logUsername">
+      <valid name="required" msg="用户名不能为空" />
+      <valid name="length" min="4" max="8" msg="用户名长度为4-8个字符" />
+      <valid name="regex" regex="\w+" msg="用户名为字符a-z,1-9,_" />
+    </field>
+    <field property="logPassword" valid-alias="required,length">
+      <valid name="required" msg="密码不能为空" />
+      <valid name="length" min="4" max="8" msg="密码长度为4-8个字符" />
+      <valid name="regex" regex="\w+" msg="密码为字符a-z,1-9" />
+    </field>
+    <field property="logPassword2">
+      <valid name="required" msg="密码不能为空" />
+      <valid name="equal" ref="logPassword,logPassword2" msg="两次输入不一致" />
+    </field>
+    <field property="name">
+      <valid name="required" msg="姓名不能为空" />
+      <valid name="regex" regex="[\u4e00-\u9fbb]+" msg="姓名必须是汉字" />
+      <valid name="length" min="2" max="4" msg="姓名长度为2-4个字符" />
+    </field>
+    <field property="gender" valid-alias="required,range">
+      <valid name="required" msg="性别不能为空" />
+      <valid name="range" min="0" max="1" msg="性别格式错误" />
+      <valid name="min" min="0" msg="性别不能小于0" />
+      <valid name="max" max="1" msg="性别不能大于1" />
+      <valid name="restrict" restrict="0,1" msg="性别只能取0或1" />
+    </field>
+    <field property="mobile">
+      <valid name="regex" regex="\d{11}" msg="手机号码格式错误" />
+    </field>
+    <field property="phone">
+      <valid name="regex" regex="\d+" msg="电话号码格式错误" />
+      <valid name="atleast" min="1" ref="mobile,phone" msg="手机、电话至少填写一个" />
+    </field>
+  </fields>
+  <groups>
+    <group name="login">
+      <field property="logUsername" />
+      <field property="logPassword" />
+    </group>
+    <group name="regist">
+      <field property="logUsername" />
+      <field property="logPassword" />
+      <field property="logPassword2" />
+      <field property="name" />
+      <field property="gender" />
+      <field property="mobile" />
+      <field property="phone" />
+    </group>
+    <group name="regist1">
+      <field property="logUsername" />
+      <field property="logPassword" />
+      <field property="logPassword2" />
+      <field property="name" />
+      <field property="gender" valid-alias="required,min,max" />
+      <field property="mobile" />
+      <field property="phone" />
+    </group>
+    <group name="regist2">
+      <field property="logUsername" />
+      <field property="logPassword" />
+      <field property="logPassword2" />
+      <field property="name" />
+      <field property="gender" valid-alias="required,restrict" />
+      <field property="mobile" />
+      <field property="phone" />
+    </group>
+    <group name="registSimple">
+      <field property="logUsername" valid-alias="required,length" />
+      <field property="logPassword" />
+      <field property="logPassword2" />
+    </group>
+    <group name="registScript">
+      <field property="logUsername" />
+      <field property="logPassword" />
+      <field property="logPassword2" />
+      <field property="name" />
+	  <!-- 如果是gender==0，姓名、手机|电话必填-->
+      <script test="target.gender==0">
+		<field property="mobile" />
+		<field property="phone" />
+      </script>
+    </group>
+  </groups>
+</entity>
