@@ -20,7 +20,8 @@ JSR-303提供的默认注解是 javax.validation.Valid, 但这个注解有个缺
 1. 安装easyValidator. 可直接依赖,也可通过mvn install或deploy的方式安装到maven库中. 
 
 2. 配置使用
-	1. 在你的springmvc配置文件(对应DispatcherServlet)中添加
+
+	2.1 在你的springmvc配置文件(对应DispatcherServlet)中添加
 	
 	```
 	<!--1. 创建EasyValidator Bean对象-->
@@ -38,7 +39,7 @@ JSR-303提供的默认注解是 javax.validation.Valid, 但这个注解有个缺
 	</mvc:interceptors>
 	```
 
-	2. easyValidator中已提供了默认的校验规则, 在classpath:validator/internal/validator.xml中.如果需要扩展校验规则, 请在项目的classpath: validator/validator.xml或validator/internal/validtor.xml中定义.举例: 
+	2.2 easyValidator中已提供了默认的校验规则, 在classpath:validator/internal/validator.xml中.如果需要扩展校验规则, 请在项目的classpath: validator/validator.xml或validator/internal/validtor.xml中定义.举例: 
 	
 	```
 	<?xml version="1.0" encoding="UTF-8"?>
@@ -47,7 +48,7 @@ JSR-303提供的默认注解是 javax.validation.Valid, 但这个注解有个缺
 	</validators>	
 	```  
 
-	3. 对要校验的实体类定义校验规则. 对象规则文件放在classpath: validator/ 目录下, 文件名以*.entity.xml结尾. 举例:
+	2.3 对要校验的实体类定义校验规则. 对象规则文件放在classpath: validator/ 目录下, 文件名以*.entity.xml结尾. 举例:
 	
 	```
 	<!--UserDTO.entity.xml-->
@@ -131,9 +132,9 @@ JSR-303提供的默认注解是 javax.validation.Valid, 但这个注解有个缺
 	</entity>
 	```
  	
-	4. 对需要验证的Controller方法中验证对象添加@ValidEasy注解. 注解value如果不配置, 默认使用方法名作为分组名称. 也可配置为多个分组, 验证时使用*.entity.xml中相应的多个分组结合验证. 
+	2.4 对需要验证的Controller方法中验证对象添加@ValidEasy注解. 注解value如果不配置, 默认使用方法名作为分组名称. 也可配置为多个分组, 验证时使用*.entity.xml中相应的多个分组结合验证. 
 	
-	5. 验证不通过时, 错误信息集合可通过ModelAndView.getModel().get("_error")来获取.
+	2.5 验证不通过时, 错误信息集合可通过ModelAndView.getModel().get("_error")来获取.
 
 ## 默认校验器
 
