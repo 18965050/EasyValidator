@@ -138,6 +138,147 @@ JSR-303提供的默认注解是 javax.validation.Valid, 但这个注解有个缺
 
 ## 默认校验器
 
-## 扩展校验器
+| 校验器   | 名称    | 参数    | 说明   |
+| ----:|----:|:----|:----|
+| RequiredValidator | required | - | 非空或不为"" |
+| NullValidator | null | - | 为空 |
+| NotNullValidator | notnull | - | 非空 |
+| NotBlankValidator | notblank | - | 可为空但不能为"" |
+| RegexValidator | regex | regex | 正则 |
+| LengthValidator | length | min; max | 字符串长度校验 |
+| MaxValidator | max | max | 数字或数字字符串最大值校验 |
+| MinValidator | min | min | 数字或数字字符串最小值校验 |
+| RangeValidator | range | min; max | 数字或数字字符串范围校验 |
+| RestrictValidator | restrict | restrict(多个值以逗号分隔) | 限定值校验 |
+| SizeValidator | size | min; max | 对集合类型指的是大小, 对字符类型指的是长度 |
+| CompareValidator | compare | flag(EQ,NE,LT,LE,GT,GE); ref(属性字段集合. 集合大小>=2. ) | 第一个属性和后续属性进行比较校验 |
+| EqualValidator | equal |  ref(属性字段集合. 集合大小>=2. 多个字段以逗号分隔) | 属性是否相同校验. 扩展自CompareValidator |
+| AtMostValidator | atmost | max; ref(属性字段集合. 多个字段以逗号分隔) | 被校验对象最多有几个属性可以有值校验 |
+| AtLeastValidator | atleast | min; ref(属性字段集合. 多个字段以逗号分隔) | 被校验对象最少有几个属性可以有值校验 |
+| PastValidator | past | - | 日期对象在当前日期之前校验 |
+| FutureValidator | future | - | 日期对象在当前日期之后校验 |
+| UrlValidator | url | url | 对象或对象字面量是否符合URL规范校验 |
+| EmailValidator | email | - | 对象是否符合Email规范校验.对象可为空 |
+| IdCardValidator | idcard | - | 身份证格式校验 |
+
+## 扩展校验
+
+扩展校验包括两部分内容: 
+
+### 扩展校验规则
+扩展校验规则有两种方式:
+
+#### 通过继承 AbstractValidator 类扩展 
+- 继承AbstractValidator类实现验证器扩展XxxValidator
+
+	```
+	package cn.xyz.chaos.examples.showcase.web.controller.validator;
+	
+	import cn.xyz.chaos.validator.ValidContext;
+	import cn.xyz.chaos.validator.validators.AbstractValidator;
+	
+	/**
+	 * 自定义扩展校验器
+	 * 
+	 * @author lvchenggang
+	 */
+	public class XxxValidator extends AbstractValidator {
+	
+		@Override
+		public boolean isValid(Object object, ValidContext validContext) {
+			// TODO具体校验规则
+			return false;
+		}
+	
+	}
+	
+	```
+
+- 在validator.xml中配置此XxxValidator，并配置相关参数
+
+	```
+	<validators>
+		<validator name="xxx" class="cn.xyz.chaos.examples.showcase.web.controller.validator.XxxValidator" />
+	</validators>
+	```
+
+#### 通过扩展已有校验规则
+```
+<validators>
+	<validator name="mail" extends="regex" args="\\w+@\\w+\\.\\w+" />
+</validators>
+```
+
+### 扩展校验器
+- 自定义校验器, 继承ActionValidator类
+
+	```
+	package cn.xyz.chaos.validator.action;
+	
+	import java.util.Arrays;
+	import java.util.List;
+	
+	import cn.xyz.chaos.validator.EasyFieldError;
+	import cn.xyz.chaos.validator.EasyValidatorUtilities;
+	import cn.xyz.chaos.validator.ValidContext;
+	import cn.xyz.chaos.validator.data.Action;
+	import cn.xyz.chaos.validator.data.Field;
+	import cn.xyz.chaos.validator.data.FieldAction;
+	import cn.xyz.chaos.validator.data.Valid;
+	import cn.xyz.chaos.validator.utils.beans.BeanUtils;
+	import cn.xyz.chaos.validator.validators.Validator;
+	
+	/**
+	 * <pre>
+	 * 字段校验器.一个字段对应多个Valid
+	 * </pre>
+	 * 
+	 * @author lvchenggang
+	 *
+	 */
+	public class FieldActionValidator implements ActionValidator<FieldAction> {
+	
+		@Override
+		public List<EasyFieldError> validator(EasyValidatorUtilities utilities, ValidContext validContext,
+				FieldAction action, ActionValidatorChain chain) {
+			Field field = action.getField();
+			List<Valid> valids = field.getValids();
+			for (Valid valid : valids) {
+				Validator validator = utilities.getContext().getValidator(valid.getName());
+				if (validator != null) {
+					validContext.setValid(valid);
+					// 验证值
+					Object object = BeanUtils.getProperty(validContext.getTarget(), field.getProperty());
+					if (!validator.isValid(object, validContext)) {
+						EasyFieldError error = new EasyFieldError(field.getProperty(), valid.getMsg(), valid.attrs());
+						validContext.getErrors().add(error);
+						return Arrays.asList(error);
+					}
+				}
+			}
+			return null;
+		}
+	
+		@Override
+		public boolean supports(Action action) {
+			return action instanceof FieldAction;
+		}
+	
+	}
+	
+	```
+
+- 扩展xml校验执行器配置解析器. 解析器继承自ActionResolver. 比如:
+
+	```
+	<validators>
+		<action-resolver class="cn.xyz.chaos.validator.action.xml.FieldActionResolver"/>
+	</validators>
+	```
 
 ## 和Hibernate Validator比较
+
+| 校验框架 | 优势 | 劣势 |
+| ----:|:----|----:|
+| EasyValidator | (1) 校验规则丰富, 支持自定义, 且扩展方便 <br /> (2) 支持对象上下文, 可进行校验属性和其他对象属性关联 <br /> (3) xml方式配置, 配置清晰明了| 只能对Controller方法参数对象进行校验 |
+| HibernateValidator | (1) 注解校验. 配置简单. <br /> (2) 可对任意方法的参数对象进行校验 <br /> (3) 支持校验规则扩展 | (1) 分组校验代码管理比较混乱 <br /> (2) 不支持对象属性关联 |
