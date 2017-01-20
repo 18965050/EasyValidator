@@ -9,7 +9,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 
 /**
- * Created by mengfanjun on 14/12/12 012.
+ * Created by lvchenggang on 14/12/12 012.
  */
 public class FieldUtils {
 

@@ -5,7 +5,7 @@ import java.util.Map;
 import cn.xyz.chaos.validator.ValidContext;
 
 /**
- * Created by mengfanjun on 14/12/9 009.
+ * Created by lvchenggang on 14/12/9 009.
  */
 public interface Validator {
 

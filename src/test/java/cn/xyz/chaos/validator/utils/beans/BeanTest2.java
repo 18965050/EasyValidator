@@ -3,7 +3,7 @@ package cn.xyz.chaos.validator.utils.beans;
 import cn.xyz.chaos.validator.utils.beans.resolver.DefaultResolver;
 
 /**
- * Created by mengfanjun on 14/11/11 011.
+ * Created by lvchenggang on 14/11/11 011.
  */
 public class BeanTest2 {
 	public static void main(String[] args) {

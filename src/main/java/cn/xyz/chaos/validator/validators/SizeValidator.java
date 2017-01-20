@@ -15,7 +15,7 @@ import cn.xyz.chaos.validator.utils.StringUtils;
  * Collection
  * Map
  * 
- * @author mengfanjun
+ * @author lvchenggang
  * 
  */
 public class SizeValidator extends AbstractValidator {

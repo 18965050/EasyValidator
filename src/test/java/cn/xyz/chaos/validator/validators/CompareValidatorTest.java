@@ -14,7 +14,7 @@ import java.util.List;
 import static cn.xyz.chaos.validator.validators.CompareValidator.*;
 
 /**
- * Created by mengfanjun on 14/12/10 010.
+ * Created by lvchenggang on 14/12/10 010.
  */
 public class CompareValidatorTest {
 

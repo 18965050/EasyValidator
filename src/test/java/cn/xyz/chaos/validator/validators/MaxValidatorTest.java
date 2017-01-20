@@ -11,7 +11,7 @@ import cn.xyz.chaos.validator.config.XmlValidatorResolver;
 import cn.xyz.chaos.validator.data.Valid;
 
 /**
- * Created by mengfanjun on 14/12/10 010.
+ * Created by lvchenggang on 14/12/10 010.
  */
 public class MaxValidatorTest {
 
